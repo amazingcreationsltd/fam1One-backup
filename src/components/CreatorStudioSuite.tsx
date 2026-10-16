@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Clapperboard, Share2, Sparkles, Check, ArrowRight } from 'lucide-react';
+import { FileText, Clapperboard, Share2, Sparkles, Check, ArrowRight, ChevronDown } from 'lucide-react';
 
 interface CreatorService {
   id: string;
@@ -80,8 +80,16 @@ const CREATOR_SERVICES: CreatorService[] = [
   }
 ];
 
+const springTransition = {
+  type: 'spring' as const,
+  stiffness: 500,
+  damping: 40,
+  mass: 1,
+};
+
 export const CreatorStudioSuite: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('scripting');
+  const [mobileOpenId, setMobileOpenId] = useState<string | null>('scripting');
   const activeService = CREATOR_SERVICES.find((s) => s.id === activeTab) || CREATOR_SERVICES[0];
 
   return (
@@ -101,8 +109,8 @@ export const CreatorStudioSuite: React.FC = () => {
           </p>
         </div>
 
-        {/* 3 Step Pill Selector */}
-        <div className="flex items-center p-1.5 rounded-2xl bg-surface/80 border border-white/10 backdrop-blur-md self-start lg:self-auto">
+        {/* 3 Step Pill Selector (Desktop only) */}
+        <div className="hidden lg:flex items-center p-1.5 rounded-2xl bg-surface/80 border border-white/10 backdrop-blur-md">
           {CREATOR_SERVICES.map((s) => (
             <button
               key={s.id}
@@ -119,8 +127,130 @@ export const CreatorStudioSuite: React.FC = () => {
         </div>
       </div>
 
-      {/* Interactive 3-Card Split Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      {/* MOBILE ACCORDION VIEW (< lg) */}
+      <div className="block lg:hidden space-y-3.5">
+        {CREATOR_SERVICES.map((service) => {
+          const isOpen = mobileOpenId === service.id;
+
+          return (
+            <div
+              key={service.id}
+              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                isOpen
+                  ? 'bg-surface/95 border-accent/40 shadow-xl shadow-accent/5'
+                  : 'bg-surface/50 border-white/10'
+              } backdrop-blur-xl`}
+            >
+              {/* Accordion Trigger Header */}
+              <button
+                type="button"
+                onClick={() => setMobileOpenId(isOpen ? null : service.id)}
+                className="w-full flex items-center justify-between p-5 text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-3.5 pr-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                      isOpen
+                        ? 'bg-accent/15 border border-accent/30 text-accent'
+                        : 'bg-white/[0.04] border border-white/10 text-muted'
+                    }`}
+                  >
+                    {service.icon}
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] font-bold text-accent uppercase tracking-wider block">
+                      {service.step}
+                    </span>
+                    <h3 className="font-display text-lg font-bold text-white tracking-tight leading-snug">
+                      {service.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <motion.div
+                  animate={{ rotate: isOpen ? 180 : 0 }}
+                  transition={springTransition}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border transition-colors ${
+                    isOpen
+                      ? 'bg-accent text-white border-accent shadow-md shadow-accent/25'
+                      : 'bg-white/[0.04] text-muted border-white/10'
+                  }`}
+                >
+                  <ChevronDown className="w-4 h-4" />
+                </motion.div>
+              </button>
+
+              {/* Accordion Collapsible Body */}
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isOpen ? 'auto' : 0,
+                  opacity: isOpen ? 1 : 0,
+                }}
+                transition={springTransition}
+                className="overflow-hidden"
+              >
+                <div className="px-5 pb-6 pt-2 border-t border-white/5 space-y-4">
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed font-normal">
+                    {service.description}
+                  </p>
+
+                  {/* Highlights */}
+                  <div className="space-y-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-white block">
+                      Execution Highlights:
+                    </span>
+                    <div className="space-y-2">
+                      {service.points.map((pt, i) => (
+                        <div
+                          key={i}
+                          className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5 text-xs text-white/90"
+                        >
+                          <Check className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                          <span>{pt}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Performance Specs */}
+                  <div className="grid grid-cols-3 gap-2 pt-1">
+                    {service.specs.map((sp, i) => (
+                      <div
+                        key={i}
+                        className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center"
+                      >
+                        <div className="text-[10px] text-muted font-medium mb-0.5">{sp.label}</div>
+                        <div className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                          {sp.val}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Deliverable & CTA */}
+                  <div className="pt-3 border-t border-white/10 space-y-3">
+                    <div className="text-[11px] text-muted">
+                      <strong>Deliverable:</strong> {service.deliverable}
+                    </div>
+                    <a
+                      href="#contact"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full bg-accent text-white text-xs font-semibold shadow-lg shadow-accent/25 active:scale-[0.98] transition-all"
+                    >
+                      <span>Apply for Representation</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* DESKTOP 2-COLUMN INTERACTIVE VIEW (>= lg) */}
+      <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-stretch">
         {/* Left Column: 3 Stepper Selection List */}
         <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
           {CREATOR_SERVICES.map((service) => {

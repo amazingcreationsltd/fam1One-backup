@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, Sun, Moon, Menu, X, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Sun, Moon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { useTheme } from '../context/ThemeContext';
 import { useAudience } from '../context/AudienceContext';
@@ -57,6 +58,17 @@ export const Navbar: React.FC<NavbarProps> = ({ isLoaded = false }) => {
       );
     }
   }, [internalLoaded]);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <>
@@ -165,109 +177,146 @@ export const Navbar: React.FC<NavbarProps> = ({ isLoaded = false }) => {
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.05] border border-white/10 text-white"
+              className="lg:hidden relative z-50 flex flex-col items-center justify-center w-10 h-10 rounded-full bg-surface/80 dark:bg-surface/70 border border-black/10 dark:border-white/15 text-white hover:border-accent/40 transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
             >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              <div className="w-5 h-3.5 relative flex flex-col justify-between">
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-0.5 bg-white rounded-full origin-center"
+                />
+                <motion.span
+                  animate={mobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-0.5 bg-white rounded-full origin-center"
+                />
+              </div>
             </button>
           </div>
         </nav>
       </header>
 
-      {/* Mobile Modal Overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-surface/85 backdrop-blur-2xl backdrop-saturate-150 lg:hidden flex flex-col justify-between pt-28 pb-10 px-6 animate-fadeIn">
-          <div className="space-y-6">
-            <div className="p-1 rounded-full bg-white/5 border border-white/10 flex">
-              <button
-                onClick={() => {
-                  setAudience('brand');
-                  setMobileMenuOpen(false);
-                }}
-                className={`flex-1 py-2 text-xs font-semibold rounded-full text-center transition-all ${
-                  audience === 'brand' ? 'bg-accent text-white shadow' : 'text-muted'
-                }`}
-              >
-                For Brands
-              </button>
-              <button
-                onClick={() => {
-                  setAudience('creator');
-                  setMobileMenuOpen(false);
-                }}
-                className={`flex-1 py-2 text-xs font-semibold rounded-full text-center transition-all ${
-                  audience === 'creator' ? 'bg-accent text-white shadow' : 'text-muted'
-                }`}
-              >
-                For Creators
-              </button>
-            </div>
+      {/* Full-Screen / Side-Drawer Editorial Takeover */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden overflow-hidden">
+            {/* Backdrop Blur Scrim */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            />
 
-            <div className="divide-y divide-white/10 text-lg font-medium space-y-2">
-              <a
-                href="#services"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block pt-3 pb-2 text-white hover:text-accent transition-colors"
-              >
-                Solutions
-              </a>
-              <a
-                href="#portfolio"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block pt-3 pb-2 text-white hover:text-accent transition-colors"
-              >
-                Showcase & Case Studies
-              </a>
-              <a
-                href="#roster"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block pt-3 pb-2 text-white hover:text-accent transition-colors"
-              >
-                Creator Roster
-              </a>
-              <a
-                href="#workflow"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block pt-3 pb-2 text-white hover:text-accent transition-colors"
-              >
-                Production Process
-              </a>
-              <a
-                href="#calculator"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block pt-3 pb-2 text-white hover:text-accent transition-colors"
-              >
-                Revenue Simulator
-              </a>
-            </div>
-          </div>
+            {/* Sliding Drawer (Right to Left) */}
+            <motion.nav
+              initial={{ x: '100%' }}
+              animate={{ x: '0%' }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-y-0 right-0 w-full sm:w-[85vw] max-w-lg bg-surface/95 dark:bg-[#06080C]/98 backdrop-blur-3xl border-l border-black/10 dark:border-white/10 p-6 sm:p-10 flex flex-col justify-between overflow-y-auto shadow-2xl"
+              aria-label="Mobile Navigation Drawer"
+            >
+              {/* Drawer Header Status */}
+              <div className="pt-20 sm:pt-16 pb-6 border-b border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-muted">
+                    FamO1Mediaa Navigation
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/20">
+                  Live Reel 2026
+                </span>
+              </div>
 
-          <div className="space-y-3 pt-6">
-            <a
-              href="#contact"
-              onClick={() => {
-                setAudience('brand');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-xs bg-accent text-white shadow-lg"
-            >
-              <span>Schedule Brand Audit</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-            <a
-              href="#contact"
-              onClick={() => {
-                setAudience('creator');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-xs bg-white/10 text-white border border-white/10"
-            >
-              <span>Apply for Roster</span>
-              <Sparkles className="w-4 h-4 text-accent" />
-            </a>
+              {/* Audience Pill Selector */}
+              <div className="my-6 p-1 rounded-full bg-white/[0.04] border border-white/10 flex">
+                <button
+                  onClick={() => setAudience('brand')}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-full text-center transition-all ${
+                    audience === 'brand' ? 'bg-accent text-white shadow-md' : 'text-muted'
+                  }`}
+                >
+                  For Brands
+                </button>
+                <button
+                  onClick={() => setAudience('creator')}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-full text-center transition-all ${
+                    audience === 'creator' ? 'bg-accent text-white shadow-md' : 'text-muted'
+                  }`}
+                >
+                  For Creators
+                </button>
+              </div>
+
+              {/* Editorial Large Staggered Links */}
+              <div className="flex flex-col gap-2 sm:gap-3 py-4 flex-1 justify-center">
+                {[
+                  { num: '01', label: 'Solutions', href: '#services' },
+                  { num: '02', label: 'District Blitz', href: '#outdoor' },
+                  { num: '03', label: 'Creator Trio', href: '#creator-suite' },
+                  { num: '04', label: 'Showcase Reel', href: '#portfolio' },
+                  { num: '05', label: 'Production Process', href: '#workflow' },
+                  { num: '06', label: 'Yield Simulator', href: '#calculator' },
+                  { num: '07', label: 'Contact Partner Desk', href: '#contact' },
+                ].map((item, idx) => (
+                  <motion.a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    initial={{ x: 60, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 40, opacity: 0 }}
+                    transition={{
+                      delay: 0.15 + idx * 0.05,
+                      duration: 0.55,
+                      ease: [0.34, 1.56, 0.64, 1], // Bouncy entrance per reference
+                    }}
+                    className="group flex items-baseline gap-3 text-white hover:text-accent transition-colors duration-200 select-none py-1"
+                  >
+                    <span className="text-xs font-mono font-bold text-muted group-hover:text-accent transition-colors">
+                      {item.num}
+                    </span>
+                    <span className="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-wider group-hover:translate-x-2 transition-transform duration-300">
+                      {item.label}
+                    </span>
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Direct Desk & Global Hubs Contacts Section */}
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -20, opacity: 0 }}
+                transition={{ delay: 0.45, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                className="pt-6 border-t border-white/10 space-y-4 text-xs"
+              >
+                <div>
+                  <span className="text-muted block text-[11px] mb-1">Direct Senior Desk</span>
+                  <a
+                    href="mailto:partners@famo1mediaa.agency"
+                    className="text-base sm:text-lg font-bold text-white hover:text-accent transition-colors flex items-center gap-2"
+                  >
+                    <span>partners@famo1mediaa.agency</span>
+                    <ArrowUpRight className="w-4 h-4 text-accent" />
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-between text-muted text-[11px]">
+                  <span>Hubs: London · NY · Dubai</span>
+                  <span className="text-white font-medium">© 2026 FamO1Mediaa</span>
+                </div>
+              </motion.div>
+            </motion.nav>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 };

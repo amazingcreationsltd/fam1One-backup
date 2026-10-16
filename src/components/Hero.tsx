@@ -297,37 +297,42 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
       {/* Editorial Distributed Hero Layout */}
       <div className="mb-14">
         {/* Typography & Direct Action */}
-        <div className="max-w-4xl space-y-6 text-left">
-          <div
-            ref={badgeRef}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-xs font-semibold text-muted backdrop-blur-md"
-          >
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-white">FamO1Mediaa Engine</span>
-            <span className="text-muted">·</span>
-            <span>Outdoor & Digital Commerce</span>
+        <div className="max-w-4xl space-y-6 text-center sm:text-left mx-auto sm:mx-0">
+          {/* Badge */}
+          <div className="flex justify-center sm:justify-start">
+            <div
+              ref={badgeRef}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-xs font-semibold text-muted backdrop-blur-md"
+            >
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              <span className="text-white">FamO1Mediaa Engine</span>
+              <span className="text-muted">·</span>
+              <span>Outdoor & Digital Commerce</span>
+            </div>
           </div>
 
+          {/* Heading */}
           <h1
             ref={titleRef}
-            className="font-display font-extrabold text-white text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[1.04] text-balance"
+            className="font-display font-extrabold text-white text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] leading-[1.06] text-balance text-center sm:text-left tracking-normal"
           >
             Two-Sided Growth Engine For Brands & Creators
           </h1>
 
+          {/* Subtext */}
           <p
             ref={descRef}
-            className="text-base sm:text-lg text-muted font-normal leading-relaxed max-w-2xl"
+            className="text-sm sm:text-base md:text-lg text-muted font-normal leading-relaxed max-w-2xl mx-auto sm:mx-0 text-center sm:text-left text-balance"
           >
             We bridge hyper-local marketing campaigns, tier-1 influencer partnerships, curated 3–5 restaurant district outdoor blitzes, and daily hands-on social media handling with an elite creator production trio.
           </p>
 
           {/* Nested Island CTA Group */}
-          <div ref={ctaRef} className="pt-2 flex flex-wrap items-center gap-4">
+          <div ref={ctaRef} className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center sm:justify-start gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto sm:mx-0">
             <a
               href="#contact"
               onClick={() => setAudience('brand')}
-              className="group inline-flex items-center pl-6 pr-2 py-2 rounded-full bg-accent hover:bg-accent-hover text-white text-xs sm:text-sm font-semibold shadow-xl shadow-accent/25 transition-all duration-300 active:scale-[0.98]"
+              className="w-full sm:w-auto justify-center group inline-flex items-center pl-6 pr-2 py-2.5 rounded-full bg-accent hover:bg-accent-hover text-white text-xs sm:text-sm font-semibold shadow-xl shadow-accent/25 transition-all duration-300 active:scale-[0.98]"
             >
               <span>Audit Your Brand</span>
               <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center ml-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -338,7 +343,7 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
             <a
               href="#contact"
               onClick={() => setAudience('creator')}
-              className="group inline-flex items-center pl-6 pr-2 py-2 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-all duration-300 active:scale-[0.98]"
+              className="w-full sm:w-auto justify-center group inline-flex items-center pl-6 pr-2 py-2.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-white text-xs sm:text-sm font-semibold border border-white/10 transition-all duration-300 active:scale-[0.98]"
             >
               <span>Creator Representation</span>
               <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center ml-3 transition-transform duration-300 group-hover:translate-x-1">
@@ -348,18 +353,18 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
           </div>
 
           {/* Live System Signal Badges */}
-          <div className="pt-3 flex flex-wrap items-center gap-3 text-xs text-muted">
-            <span className="flex items-center gap-1.5 font-medium">
+          <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3 text-xs text-muted">
+            <span className="flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-full bg-white/[0.03] sm:bg-transparent border border-white/5 sm:border-0">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               3–5 Spots / District
             </span>
-            <span>·</span>
-            <span className="flex items-center gap-1.5 font-medium">
+            <span className="hidden sm:inline text-muted/40">·</span>
+            <span className="flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-full bg-white/[0.03] sm:bg-transparent border border-white/5 sm:border-0">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               Daily Social Handling
             </span>
-            <span>·</span>
-            <span className="flex items-center gap-1.5 font-medium">
+            <span className="hidden sm:inline text-muted/40">·</span>
+            <span className="flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-full bg-white/[0.03] sm:bg-transparent border border-white/5 sm:border-0">
               <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
               Future Scope: Events
             </span>

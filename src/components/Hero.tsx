@@ -295,9 +295,9 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
       />
 
       {/* Editorial Distributed Hero Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-14">
-        {/* Left Bay: Typography & Direct Action */}
-        <div className="lg:col-span-7 space-y-6 text-left">
+      <div className="mb-14">
+        {/* Typography & Direct Action */}
+        <div className="max-w-4xl space-y-6 text-left">
           <div
             ref={badgeRef}
             className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-xs font-semibold text-muted backdrop-blur-md"
@@ -310,14 +310,14 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
 
           <h1
             ref={titleRef}
-            className="font-display font-extrabold text-white text-4xl sm:text-6xl md:text-7xl lg:text-[4.75rem] leading-[1.04] text-balance"
+            className="font-display font-extrabold text-white text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[1.04] text-balance"
           >
             Two-Sided Growth Engine For Brands & Creators
           </h1>
 
           <p
             ref={descRef}
-            className="text-base sm:text-lg text-muted font-normal leading-relaxed max-w-xl"
+            className="text-base sm:text-lg text-muted font-normal leading-relaxed max-w-2xl"
           >
             We bridge hyper-local marketing campaigns, tier-1 influencer partnerships, curated 3–5 restaurant district outdoor blitzes, and daily hands-on social media handling with an elite creator production trio.
           </p>
@@ -366,7 +366,8 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
           </div>
         </div>
 
-        {/* Right Bay: Real-Time Operational Telemetry Card */}
+        {/* Live Operations Radar Card (Commented out per request) */}
+        {/*
         <div className="lg:col-span-5">
           <div className="p-6 sm:p-7 rounded-3xl bg-surface/85 backdrop-blur-xl border border-white/10 shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
@@ -381,7 +382,6 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
               </span>
             </div>
 
-            {/* Live Pipeline Items */}
             <div className="space-y-3">
               <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 space-y-1">
                 <div className="flex justify-between items-center text-xs">
@@ -420,6 +420,7 @@ export const Hero: React.FC<HeroProps> = ({ isLoaded = false }) => {
             </div>
           </div>
         </div>
+        */}
       </div>
 
       {/* Double-Bezel Split Console */}

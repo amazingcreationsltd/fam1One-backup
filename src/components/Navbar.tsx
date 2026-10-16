@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isLoaded = false }) => {
       <header className="fixed top-0 left-0 w-full z-50 pointer-events-none px-4 sm:px-6">
         <nav
           ref={navRef}
-          className="mt-4 sm:mt-6 mx-auto max-w-6xl flex items-center justify-between pointer-events-auto px-4 sm:px-6 py-3 rounded-full bg-surface/85 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.25)] transition-all duration-300"
+          className="mt-4 sm:mt-6 mx-auto max-w-6xl flex items-center justify-between pointer-events-auto px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-surface/70 dark:bg-surface/65 backdrop-blur-2xl backdrop-saturate-180 border border-black/10 dark:border-white/12 shadow-[0_16px_36px_rgba(0,0,0,0.06)] dark:shadow-[0_24px_50px_rgba(0,0,0,0.5)] ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300"
           aria-label="Main Navigation"
         >
           {/* Brand Mark */}
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isLoaded = false }) => {
 
       {/* Mobile Modal Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-surface/95 backdrop-blur-3xl lg:hidden flex flex-col justify-between pt-28 pb-10 px-6 animate-fadeIn">
+        <div className="fixed inset-0 z-40 bg-surface/85 backdrop-blur-2xl backdrop-saturate-150 lg:hidden flex flex-col justify-between pt-28 pb-10 px-6 animate-fadeIn">
           <div className="space-y-6">
             <div className="p-1 rounded-full bg-white/5 border border-white/10 flex">
               <button
